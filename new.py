@@ -35,6 +35,12 @@ if (year % 400 == 0) or (year % 4 == 0 and year % 100 != 0):
 else:
     print("Not a leap year")
 
+#Divisible by 400 → leap year
+
+#Divisible by 100 but not 400 → not leap year
+
+#Divisible by 4 but not 100 → leap year
+
 # 6. Pass or Fail
 marks = 40
 if marks >= 35:
@@ -48,6 +54,14 @@ if 100 <= num <= 999:
     print("3-digit number")
 else:
     print("Not a 3-digit number")
+
+#Condition: 100 <= num <= 999
+
+#This is a chained comparison in Python.
+
+#It checks if num is greater than or equal to 100 AND less than or equal to 999 at the same time.
+
+#So it’s basically saying: “Is num between 100 and 999 inclusive?”    
 
 # 8. Vowel check
 ch = 'a'
@@ -63,6 +77,16 @@ if a > b:
 else:
     print(f"{b} is greater")
 
+#⚡ Without f-string
+# If you didn’t use f, you’d have to write: 
+# print(str(a) + " is greater")
+
+a, b = 88, 98
+if a > b:
+    print(str(a) + " is greater")
+else:
+    print(str(b) + " is greater")
+
 # 10. Smallest of two numbers
 a, b = 3, 8
 if a < b:
@@ -76,6 +100,9 @@ if num == 0:
     print("Number is zero")
 else:
     print("Number is not zero")
+
+#Condition: if num == 0:
+#Here, == is the comparison operator (called the equality operator).
 
 # 12. Multiple of 10
 num = 50
