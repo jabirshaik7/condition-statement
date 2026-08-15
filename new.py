@@ -174,3 +174,155 @@ if temp > 30:
     print("It's hot")
 else:
     print("It's not hot")
+
+###----condition statements-----###
+
+# 1. Check if a number is a 4-digit even number
+num = 2468
+if 1000 <= num <= 9999 and num % 2 == 0:
+    print("4-digit even number")
+else:
+    print("Not a 4-digit even number")
+
+# 2. Check if a character is a consonant
+ch = "b"
+if ch.lower() in "aeiou":
+    print("Vowel")
+else:
+    print("Consonant")
+
+# 3. Divisible by 2 or 3 but not both
+num = 6
+if num % 2 == 0 and num % 3 == 0:
+    print("Divisible by both 2 and 3")
+elif num % 2 == 0:
+    print("Divisible by 2 only")
+elif num % 3 == 0:
+    print("Divisible by 3 only")
+else:
+    print("Not divisible by 2 or 3")
+
+# 4. Negative and odd
+num = -5
+if num < 0 and num % 2 != 0:
+    print("Negative and odd number")
+
+# 5. String starts with a vowel
+s = "apple"
+if s[0].lower() in "aeiou":
+    print("Starts with a vowel")
+else:
+    print("Does not start with a vowel")
+
+# 6. Valid triangle check
+a, b, c = 3, 4, 5
+if a+b>c and a+c>b and b+c>a:
+    print("Valid triangle")
+else:
+    print("Invalid triangle")
+
+# 7. Greatest among three numbers
+a, b, c = 12, 45, 30
+print(max(a, b, c), "is the greatest")
+
+# 8. Century year and leap year
+year = 2000
+if year % 100 == 0 and (year % 400 == 0):
+    print("Century leap year")
+elif year % 100 == 0:
+    print("Century year but not leap year")
+else:
+    print("Not a century year")
+
+# 9. Character is a digit
+ch = "5"
+if ch.isdigit():
+    print("Digit")
+else:
+    print("Not a digit")
+
+# 10. Palindrome number
+num = 121
+if str(num) == str(num)[::-1]:
+    print("Palindrome number")
+else:
+    print("Not palindrome")
+
+# 11. Compare lengths of two strings
+s1, s2 = "cat", "mouse"
+if len(s1) > len(s2):
+    print("First string is longer")
+elif len(s1) < len(s2):
+    print("Second string is longer")
+else:
+    print("Both strings are equal length")
+
+# 12. Number in range 50–100 and divisible by 5
+num = 75
+if 50 <= num <= 100 and num % 5 == 0:
+    print("In range and divisible by 5")
+else:
+    print("Condition not met")
+
+# 13. Strong password length
+password = "secure123"
+if len(password) >= 8:
+    print("Strong password")
+else:
+    print("Weak password")
+
+# 14. Sum of two numbers is even
+a, b = 12, 16
+if (a+b) % 2 == 0:
+    print("Sum is even")
+else:
+    print("Sum is odd")
+
+# 15. Special character check
+ch = "@"
+if ch in "!@#$%^&*()":
+    print("Special character")
+else:
+    print("Not a special character")
+
+# 16. Temperature check
+temp = 10
+if temp < 15:
+    print("Cold")
+elif 15 <= temp <= 30:
+    print("Moderate")
+else:
+    print("Hot")
+
+# 17. Number outside range 10–50
+num = 55
+if num < 10 or num > 50:
+    print("Outside the range")
+else:
+    print("Within the range")
+
+# 18. Perfect square check
+num = 36
+if int(num**0.5)**2 == num:
+    print("Perfect square")
+else:
+    print("Not a perfect square")
+
+# 19. Compare two ages
+age1, age2 = 22, 25
+if age1 > age2:
+    print("First person is older")
+elif age1 < age2:
+    print("Second person is older")
+else:
+    print("Both are same age")
+
+# 20. Angle type
+angle = 90
+if angle < 90:
+    print("Acute angle")
+elif angle == 90:
+    print("Right angle")
+else:
+    print("Obtuse angle")
+
