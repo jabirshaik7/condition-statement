@@ -42,13 +42,21 @@
 # result = add(3, 4)
 # print("result is :", result)
 
-n = int(input('no of problems :'))
-a, b = 0, 1
-for i in range(n):
-    print(a, end=" ")
-    a, b = b, a + b
-print()       
+# n = int(input('no of problems :'))
+# a, b = 0, 1
+# for i in range(n):
+#     print(a, end=" ")
+#     a, b = b, a + b
+# print()       
 
-
-
+height, weight = 1.65, 72
+bmi = weight / (height ** 2)
+if bmi < 18.5:
+    print('underweight')
+elif bmi < 25:
+    print('normal')
+elif bmi < 30:
+    print('overweight')
+else:
+    print('not good')                                  
 
