@@ -229,7 +229,7 @@ for i in range(7, N + 1, 7):
     print(i)
 
 
-# 26. LCM of Two Numbers
+# 26. LCM of Two Numbers.
 
 a, b = map(int, input("Enter two numbers for problem 26: ").split())
 x, y = a, b

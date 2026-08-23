@@ -48,15 +48,12 @@
 #     print(a, end=" ")
 #     a, b = b, a + b
 # print()       
-
-height, weight = 1.65, 72
-bmi = weight / (height ** 2)
-if bmi < 18.5:
-    print('underweight')
-elif bmi < 25:
-    print('normal')
-elif bmi < 30:
-    print('overweight')
-else:
-    print('not good')                                  
+a, b = map(int, input("Enter two numbers for problem 26: ").split())
+x, y = a, b
+while a != b:
+    if a < b:
+        a += x
+    else:
+        b += y
+print("LCM =", a)                               
 
