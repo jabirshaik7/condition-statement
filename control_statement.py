@@ -278,3 +278,87 @@ digits = len(str(n))
 for d in str(n):
     s += int(d) ** digits
 print("Armstrong" if s == n else "Not Armstrong")
+
+# control stament questions
+
+# 1. Print prime numbers between 1 and N
+N = 50
+for num in range(2, N+1):
+    for i in range(2, int(num**0.5)+1):
+        if num % i == 0:
+            break
+    else:
+        print(num, end=" ")
+
+# 2. Find GCD of two numbers using while loop
+a, b = 48, 18
+while b:
+    a, b = b, a % b
+print("\nGCD:", a)
+
+# 3. Print pattern of stars in pyramid form
+rows = 5
+for i in range(1, rows+1):
+    print(" "*(rows-i) + "*"*(2*i-1))
+
+# 4. Check if a number is perfect (sum of divisors = number)
+n = 28
+total = 0
+for i in range(1, n):
+    if n % i == 0:
+        total += i
+print("Perfect" if total == n else "Not Perfect")
+
+# 5. Find first 10 numbers divisible by both 3 and 5
+count, num = 0, 1
+while count < 10:
+    if num % 3 == 0 and num % 5 == 0:
+        print(num, end=" ")
+        count += 1
+    num += 1
+
+# 6. Print Pascal’s Triangle up to N rows
+N = 5
+for i in range(N):
+    val = 1
+    print(" "*(N-i), end="")
+    for j in range(i+1):
+        print(val, end=" ")
+        val = val*(i-j)//(j+1)
+    print()
+
+# 7. Find sum of digits until single digit (digital root)
+n = 9875
+while n > 9:
+    s = 0
+    while n > 0:
+        s += n % 10
+        n //= 10
+    n = s
+print("Digital Root:", n)
+
+# 8. Print all Armstrong numbers between 100–999
+for num in range(100, 1000):
+    s = sum(int(d)**3 for d in str(num))
+    if s == num:
+        print(num, end=" ")
+
+# 9. Generate Collatz sequence for a number
+n = 13
+while n != 1:
+    print(n, end=" -> ")
+    if n % 2 == 0:
+        n //= 2
+    else:
+        n = 3*n + 1
+print(1)
+
+# 10. Find LCM of two numbers using while loop
+a, b = 12, 15
+x, y = a, b
+while a != b:
+    if a < b:
+        a += x
+    else:
+        b += y
+print("LCM:", a)

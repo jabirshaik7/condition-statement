@@ -48,12 +48,8 @@
 #     print(a, end=" ")
 #     a, b = b, a + b
 # print()       
-a, b = map(int, input("Enter two numbers for problem 26: ").split())
-x, y = a, b
-while a != b:
-    if a < b:
-        a += x
-    else:
-        b += y
-print("LCM =", a)                               
+
+
+
+
 
