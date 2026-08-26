@@ -50,6 +50,18 @@
 # print()       
 
 
+n = int(input('enter the name :'))
+s = str(n)
+
+rev = ' '
+for ch in s:
+    rev = ch + rev
+
+if s == rev:
+    print('palindrome')
+else:
+    print('not palindrome')        
+
 
 
 
