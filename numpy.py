@@ -156,3 +156,51 @@ condition = ((a > 0) & (a % 2 == 0)) | \
 result = a[condition]
 
 print(result)
+
+
+# 1. Find all prime numbers in a NumPy array
+a = np.array([10, 11, 12, 13, 14, 15, 16, 17])
+is_prime = np.vectorize(lambda x: all(x % np.arange(2, int(np.sqrt(x))+1) != 0) and x > 1)
+print(a[is_prime(a)])   # [11 13 17]
+
+# 2. Replace all odd numbers with -1 without using loops
+a = np.arange(1, 11)
+a[a % 2 == 1] = -1
+print(a)   # [-1 2 -1 4 -1 6 -1 8 -1 10]
+
+# 3. Create a 5x5 matrix with row values increasing from 0 to 4
+print(np.tile(np.arange(5), (5,1)))
+
+# 4. Normalize a random vector (make its magnitude = 1)
+v = np.random.rand(5)
+v = v / np.linalg.norm(v)
+print(v)
+
+# 5. Find common elements between two arrays
+a = np.array([1,2,3,4,5])
+b = np.array([4,5,6,7,8])
+print(np.intersect1d(a,b))   # [4 5]
+
+# 6. Generate a checkerboard pattern (8x8)
+print(np.indices((8,8)).sum(axis=0) % 2)
+
+# 7. Find the most frequent value in an array
+a = np.random.randint(0, 10, 20)
+vals, counts = np.unique(a, return_counts=True)
+print(vals[np.argmax(counts)])
+
+# 8. Multiply two matrices and check if result is symmetric
+A = np.random.randint(1,5,(3,3))
+B = np.random.randint(1,5,(3,3))
+C = A @ B
+print(np.allclose(C, C.T))
+
+# 9. Replace maximum value in each row with 0
+a = np.random.randint(1,100,(5,5))
+a[np.arange(5), np.argmax(a, axis=1)] = 0
+print(a)
+
+# 10. Compute pairwise Euclidean distances between points
+points = np.random.rand(5,2)
+dist = np.sqrt(((points[:,None,:] - points[None,:,:])**2).sum(axis=2))
+print(dist)
