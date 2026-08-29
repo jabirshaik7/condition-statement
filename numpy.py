@@ -204,3 +204,86 @@ print(a)
 points = np.random.rand(5,2)
 dist = np.sqrt(((points[:,None,:] - points[None,:,:])**2).sum(axis=2))
 print(dist)
+
+# 1. Reverse words in a sentence without using split()
+s = "Python is powerful"
+print(" ".join(s[::-1].split()[::-1]))   # "powerful is Python"
+
+# 2. Find all anagrams in a list of words
+words = ["listen","silent","enlist","rat","tar","art"]
+from collections import defaultdict
+d = defaultdict(list)
+for w in words: d["".join(sorted(w))].append(w)
+print([v for v in d.values() if len(v)>1])  # [['listen','silent','enlist'], ['rat','tar','art']]
+
+# 3. Flatten a nested list without recursion
+nested = [[1,2],[3,[4,5]],6]
+from collections.abc import Iterable
+def flatten(lst):
+    stack, out = [iter(lst)], []
+    while stack:
+        for x in stack[-1]:
+            if isinstance(x, Iterable) and not isinstance(x, (str,bytes)):
+                stack.append(iter(x)); break
+            else: out.append(x)
+        else: stack.pop()
+    return out
+print(flatten(nested))   # [1,2,3,4,5,6]
+
+# 4. Find the longest substring without repeating characters
+s = "abcabcbb"
+seen, start, maxlen = {}, 0, 0
+for i,ch in enumerate(s):
+    if ch in seen and seen[ch]>=start: start = seen[ch]+1
+    seen[ch] = i
+    maxlen = max(maxlen, i-start+1)
+print(maxlen)   # 3 ("abc")
+
+# 5. Implement a decorator to time function execution
+import time
+def timer(func):
+    def wrapper(*args,**kwargs):
+        t0=time.time(); result=func(*args,**kwargs)
+        print("Time:",time.time()-t0); return result
+    return wrapper
+@timer
+def slow(): sum(i*i for i in range(10**6))
+slow()
+
+# 6. Find pairs in list that sum to target using set
+nums=[2,7,11,15]; target=9
+seen=set()
+for n in nums:
+    if target-n in seen: print((n,target-n))
+    seen.add(n)   # (7,2)
+
+# 7. Rotate a matrix 90° clockwise
+mat=[[1,2,3],[4,5,6],[7,8,9]]
+rot=list(zip(*mat[::-1]))
+print(rot)   # [(7,4,1),(8,5,2),(9,6,3)]
+
+# 8. Generate Pascal’s Triangle up to n rows
+def pascal(n):
+    tri=[[1]]
+    for _ in range(n-1):
+        tri.append([1]+[tri[-1][i]+tri[-1][i+1] for i in range(len(tri[-1])-1)]+[1])
+    return tri
+print(pascal(5))
+
+# 9. LRU Cache implementation using OrderedDict
+from collections import OrderedDict
+class LRU:
+    def __init__(self,cap): self.cap=cap; self.cache=OrderedDict()
+    def get(self,k): return self.cache.get(k,-1)
+    def put(self,k,v):
+        if k in self.cache: self.cache.move_to_end(k)
+        self.cache[k]=v
+        if len(self.cache)>self.cap: self.cache.popitem(last=False)
+l=LRU(2); l.put(1,1); l.put(2,2); l.put(3,3)
+print(l.cache)   # {2:2,3:3}
+
+# 10. Detect palindrome ignoring non-alphanumeric
+import re
+s="A man, a plan, a canal: Panama"
+clean=re.sub(r'[^a-z0-9]','',s.lower())
+print(clean==clean[::-1])   # True
