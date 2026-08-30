@@ -287,3 +287,78 @@ import re
 s="A man, a plan, a canal: Panama"
 clean=re.sub(r'[^a-z0-9]','',s.lower())
 print(clean==clean[::-1])   # True
+
+# 1. Find the kth largest element in a list without sorting
+import heapq
+nums=[3,2,1,5,6,4]; k=2
+print(heapq.nlargest(k,nums)[-1])   # 5
+
+# 2. Generate all permutations of a string
+from itertools import permutations
+s="abc"
+print([''.join(p) for p in permutations(s)])  # ['abc','acb','bac','bca','cab','cba']
+
+# 3. Implement binary search recursively
+def bsearch(arr,x,l=0,r=None):
+    r=len(arr)-1 if r is None else r
+    if l>r: return -1
+    mid=(l+r)//2
+    if arr[mid]==x: return mid
+    return bsearch(arr,x,l,mid-1) if x<arr[mid] else bsearch(arr,x,mid+1,r)
+print(bsearch([1,2,3,4,5],4))   # 3
+
+# 4. Detect cycle in a linked list
+class Node:
+    def __init__(self,v): self.v=v; self.next=None
+a=Node(1); b=Node(2); c=Node(3)
+a.next=b; b.next=c; c.next=a
+slow=fast=a
+while fast and fast.next:
+    slow=slow.next; fast=fast.next.next
+    if slow==fast: print("Cycle detected"); break
+
+# 5. Find longest palindrome substring
+s="babad"
+def longest_pal(s):
+    res=""
+    for i in range(len(s)):
+        for j in range(i,len(s)):
+            sub=s[i:j+1]
+            if sub==sub[::-1] and len(sub)>len(res): res=sub
+    return res
+print(longest_pal(s))   # "bab" or "aba"
+
+# 6. Implement quicksort
+def quicksort(arr):
+    if len(arr)<=1: return arr
+    pivot=arr[len(arr)//2]
+    left=[x for x in arr if x<pivot]
+    mid=[x for x in arr if x==pivot]
+    right=[x for x in arr if x>pivot]
+    return quicksort(left)+mid+quicksort(right)
+print(quicksort([3,6,8,10,1,2,1]))
+
+# 7. Find missing number in array 1..n
+arr=[1,2,4,5]
+n=5
+print(n*(n+1)//2 - sum(arr))   # 3
+
+# 8. Implement Fibonacci with memoization
+from functools import lru_cache
+@lru_cache(None)
+def fib(n): return n if n<2 else fib(n-1)+fib(n-2)
+print(fib(10))   # 55
+
+# 9. Count frequency of characters in a string
+s="programming"
+from collections import Counter
+print(Counter(s))   # {'r':2,'g':2,'m':2,'p':1,'o':1,'a':1,'i':1,'n':1}
+
+# 10. Solve Tower of Hanoi
+def hanoi(n,src,dst,aux):
+    if n==1: print(f"Move disk 1 from {src} to {dst}"); return
+    hanoi(n-1,src,aux,dst)
+    print(f"Move disk {n} from {src} to {dst}")
+    hanoi(n-1,aux,dst,src)
+hanoi(3,'A','C','B')
+
