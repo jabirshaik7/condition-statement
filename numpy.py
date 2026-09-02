@@ -362,3 +362,87 @@ def hanoi(n,src,dst,aux):
     hanoi(n-1,aux,dst,src)
 hanoi(3,'A','C','B')
 
+# 1. Find all subsets of a set (power set)
+from itertools import chain, combinations
+s = {1,2,3}
+print(list(chain.from_iterable(combinations(s,r) for r in range(len(s)+1))))
+# [(), (1,), (2,), (3,), (1,2), (1,3), (2,3), (1,2,3)]
+
+# 2. Implement matrix transpose without NumPy
+mat = [[1,2,3],[4,5,6],[7,8,9]]
+print([[mat[j][i] for j in range(len(mat))] for i in range(len(mat[0]))])
+
+# 3. Find longest common prefix among strings
+words = ["flower","flow","flight"]
+prefix = ""
+for i in zip(*words):
+    if len(set(i))==1: prefix += i[0]
+    else: break
+print(prefix)   # "fl"
+
+# 4. Detect balanced parentheses
+s = "{[()]}"
+stack, pairs = [], {')':'(',']':'[','}':'{'}
+ok=True
+for ch in s:
+    if ch in pairs.values(): stack.append(ch)
+    elif ch in pairs and (not stack or stack.pop()!=pairs[ch]): ok=False; break
+print(ok)   # True
+
+# 5. Find majority element (> n/2 times)
+nums=[2,2,1,1,1,2,2]
+count, candidate=0,None
+for n in nums:
+    if count==0: candidate=n
+    count += (1 if n==candidate else -1)
+print(candidate)   # 2
+
+# 6. Generate spiral matrix n x n
+n=3; mat=[[0]*n for _ in range(n)]
+val=1; l,r,t,b=0,n-1,0,n-1
+while l<=r and t<=b:
+    for i in range(l,r+1): mat[t][i]=val; val+=1
+    t+=1
+    for i in range(t,b+1): mat[i][r]=val; val+=1
+    r-=1
+    for i in range(r,l-1,-1): mat[b][i]=val; val+=1
+    b-=1
+    for i in range(b,t-1,-1): mat[i][l]=val; val+=1
+    l+=1
+print(mat)
+
+# 7. Find longest increasing subsequence (DP)
+arr=[10,9,2,5,3,7,101,18]
+dp=[1]*len(arr)
+for i in range(len(arr)):
+    for j in range(i):
+        if arr[i]>arr[j]: dp[i]=max(dp[i],dp[j]+1)
+print(max(dp))   # 4
+
+# 8. Implement merge intervals
+intervals=[[1,3],[2,6],[8,10],[15,18]]
+intervals.sort(key=lambda x:x[0])
+merged=[intervals[0]]
+for s,e in intervals[1:]:
+    if s<=merged[-1][1]: merged[-1][1]=max(merged[-1][1],e)
+    else: merged.append([s,e])
+print(merged)   # [[1,6],[8,10],[15,18]]
+
+# 9. Find first non-repeating character in string
+s="swiss"
+from collections import Counter
+cnt=Counter(s)
+print(next(ch for ch in s if cnt[ch]==1))   # 'w'
+
+# 10. Implement binary tree level order traversal
+from collections import deque
+class Node:
+    def __init__(self,v): self.v=v; self.left=self.right=None
+root=Node(1); root.left=Node(2); root.right=Node(3); root.left.left=Node(4)
+q=deque([root]); res=[]
+while q:
+    node=q.popleft(); res.append(node.v)
+    if node.left: q.append(node.left)
+    if node.right: q.append(node.right)
+print(res)   # [1,2,3,4]
+
