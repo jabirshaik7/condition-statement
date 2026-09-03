@@ -446,3 +446,98 @@ while q:
     if node.right: q.append(node.right)
 print(res)   # [1,2,3,4]
 
+# 1. Find the median of two sorted arrays (merge approach)
+a=[1,3]; b=[2]
+merged=sorted(a+b)
+n=len(merged)
+median=(merged[n//2] if n%2 else (merged[n//2-1]+merged[n//2])/2)
+print(median)   # 2
+
+# 2. Implement string pattern matching (KMP algorithm)
+def kmp_search(text,pat):
+    lps=[0]*len(pat); j=0
+    for i in range(1,len(pat)):
+        while j>0 and pat[i]!=pat[j]: j=lps[j-1]
+        if pat[i]==pat[j]: j+=1; lps[i]=j
+    res=[]; j=0
+    for i in range(len(text)):
+        while j>0 and text[i]!=pat[j]: j=lps[j-1]
+        if text[i]==pat[j]: j+=1
+        if j==len(pat): res.append(i-j+1); j=lps[j-1]
+    return res
+print(kmp_search("ababcabcabababd","ababd"))   # [10]
+
+# 3. Find maximum subarray sum (Kadane’s Algorithm)
+arr=[-2,1,-3,4,-1,2,1,-5,4]
+max_sum=cur=arr[0]
+for x in arr[1:]:
+    cur=max(x,cur+x); max_sum=max(max_sum,cur)
+print(max_sum)   # 6
+
+# 4. Serialize and deserialize a binary tree
+import json
+class Node:
+    def __init__(self,v): self.v=v; self.left=self.right=None
+root=Node(1); root.left=Node(2); root.right=Node(3)
+def serialize(node):
+    if not node: return None
+    return {"v":node.v,"left":serialize(node.left),"right":serialize(node.right)}
+def deserialize(d):
+    if not d: return None
+    n=Node(d["v"]); n.left=deserialize(d["left"]); n.right=deserialize(d["right"]); return n
+data=json.dumps(serialize(root))
+print(data)
+
+# 5. Find shortest path in graph (Dijkstra)
+import heapq
+graph={0:[(1,4),(2,1)],1:[(3,1)],2:[(1,2),(3,5)],3:[]}
+dist={0:0}; pq=[(0,0)]
+while pq:
+    d,u=heapq.heappop(pq)
+    if d>dist[u]: continue
+    for v,w in graph[u]:
+        if v not in dist or d+w<dist[v]:
+            dist[v]=d+w; heapq.heappush(pq,(dist[v],v))
+print(dist)   # {0:0,2:1,1:3,3:4}
+
+# 6. Find longest consecutive sequence in array
+nums=[100,4,200,1,3,2]
+s=set(nums); longest=0
+for n in s:
+    if n-1 not in s:
+        length=1
+        while n+length in s: length+=1
+        longest=max(longest,length)
+print(longest)   # 4
+
+# 7. Implement LCS (Longest Common Subsequence)
+X="AGGTAB"; Y="GXTXAYB"
+dp=[[0]*(len(Y)+1) for _ in range(len(X)+1)]
+for i in range(1,len(X)+1):
+    for j in range(1,len(Y)+1):
+        dp[i][j]=dp[i-1][j-1]+1 if X[i-1]==Y[j-1] else max(dp[i-1][j],dp[i][j-1])
+print(dp[-1][-1])   # 4
+
+# 8. Find top k frequent elements
+nums=[1,1,1,2,2,3]; k=2
+from collections import Counter
+print([x for x,_ in Counter(nums).most_common(k)])   # [1,2]
+
+# 9. Implement matrix multiplication manually
+A=[[1,2],[3,4]]; B=[[2,0],[1,2]]
+res=[[sum(A[i][k]*B[k][j] for k in range(len(B))) for j in range(len(B[0]))] for i in range(len(A))]
+print(res)   # [[4,4],[10,8]]
+
+# 10. Solve N-Queens problem (backtracking)
+def solveNQueens(n):
+    res=[]; cols=set(); diag1=set(); diag2=set()
+    def backtrack(r,board):
+        if r==n: res.append(["".join(row) for row in board]); return
+        for c in range(n):
+            if c in cols or r-c in diag1 or r+c in diag2: continue
+            board[r][c]='Q'; cols.add(c); diag1.add(r-c); diag2.add(r+c)
+            backtrack(r+1,board)
+            board[r][c]='.'; cols.remove(c); diag1.remove(r-c); diag2.remove(r+c)
+    backtrack(0,[['.']*n for _ in range(n)])
+    return res
+print(solveNQueens(4))
