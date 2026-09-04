@@ -541,3 +541,121 @@ def solveNQueens(n):
     backtrack(0,[['.']*n for _ in range(n)])
     return res
 print(solveNQueens(4))
+
+# 1. Find median of a stream of numbers using two heaps
+import heapq
+low, high = [], []
+def add_num(num):
+    heapq.heappush(low, -num)
+    heapq.heappush(high, -heapq.heappop(low))
+    if len(high) > len(low):
+        heapq.heappush(low, -heapq.heappop(high))
+def median():
+    return (-low[0] if len(low)>len(high) else (-low[0]+high[0])/2)
+for n in [5,15,1,3]:
+    add_num(n); print(median())
+# Output: 5,10,5,4
+
+# 2. Implement Trie and search prefix
+class Trie:
+    def __init__(self): self.children={}; self.end=False
+    def insert(self,w):
+        node=self
+        for ch in w: node=node.children.setdefault(ch,Trie())
+        node.end=True
+    def startsWith(self,p):
+        node=self
+        for ch in p:
+            if ch not in node.children: return False
+            node=node.children[ch]
+        return True
+t=Trie(); t.insert("apple")
+print(t.startsWith("app"))   # True
+
+# 3. Find maximum product subarray
+arr=[2,3,-2,4]
+cur_max=cur_min=res=arr[0]
+for x in arr[1:]:
+    cur_max,cur_min=max(x,cur_max*x,cur_min*x),min(x,cur_max*x,cur_min*x)
+    res=max(res,cur_max)
+print(res)   # 6
+
+# 4. Word ladder shortest transformation
+from collections import deque
+begin,end="hit","cog"
+wordList={"hot","dot","dog","lot","log","cog"}
+q=deque([(begin,1)])
+while q:
+    w,d=q.popleft()
+    if w==end: print(d); break
+    for i in range(len(w)):
+        for c in "abcdefghijklmnopqrstuvwxyz":
+            nxt=w[:i]+c+w[i+1:]
+            if nxt in wordList:
+                wordList.remove(nxt); q.append((nxt,d+1))
+# Output: 5
+
+# 5. Find maximum rectangle in histogram
+heights=[2,1,5,6,2,3]
+stack=[]; max_area=0
+for i,h in enumerate(heights+[0]):
+    while stack and heights[stack[-1]]>h:
+        H=heights[stack.pop()]
+        W=i if not stack else i-stack[-1]-1
+        max_area=max(max_area,H*W)
+    stack.append(i)
+print(max_area)   # 10
+
+# 6. Sudoku solver (backtracking)
+board=[["5","3",".",".","7",".",".",".","."], ...] # shortened
+def valid(b,r,c,ch):
+    for i in range(9):
+        if b[r][i]==ch or b[i][c]==ch or b[r//3*3+i//3][c//3*3+i%3]==ch: return False
+    return True
+def solve(b):
+    for r in range(9):
+        for c in range(9):
+            if b[r][c]==".":
+                for ch in "123456789":
+                    if valid(b,r,c,ch):
+                        b[r][c]=ch
+                        if solve(b): return True
+                        b[r][c]="."
+                return False
+    return True
+
+# 7. Find kth smallest element in BST
+class Node:
+    def __init__(self,v): self.v=v; self.left=self.right=None
+root=Node(5); root.left=Node(3); root.right=Node(6); root.left.left=Node(2); root.left.right=Node(4)
+def inorder(node):
+    return inorder(node.left)+[node.v]+inorder(node.right) if node else []
+print(inorder(root)[2])   # 4 (3rd smallest)
+
+# 8. Detect duplicate subtrees in binary tree
+seen=set(); res=[]
+def serialize(node):
+    if not node: return "#"
+    s=f"{node.v},{serialize(node.left)},{serialize(node.right)}"
+    if s in seen: res.append(node.v)
+    seen.add(s); return s
+
+# 9. Implement producer-consumer with threading
+import threading,queue,time
+q=queue.Queue()
+def producer():
+    for i in range(5): q.put(i); time.sleep(0.1)
+def consumer():
+    while True:
+        item=q.get(); print("Consumed",item)
+        if item==4: break
+threading.Thread(target=producer).start()
+threading.Thread(target=consumer).start()
+
+# 10. Find shortest palindrome by adding chars in front
+s="aacecaaa"
+rev=s[::-1]
+for i in range(len(s)):
+    if s.startswith(rev[i:]): 
+        print(rev[:i]+s); break
+# Output: "aaacecaaa"
