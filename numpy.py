@@ -659,3 +659,121 @@ for i in range(len(s)):
     if s.startswith(rev[i:]): 
         print(rev[:i]+s); break
 # Output: "aaacecaaa"
+
+# 1. Find maximum sum rectangle in a 2D matrix
+mat=[[1,2,-1,-4,-20],[ -8,-3,4,2,1],[3,8,10,1,3],[-4,-1,1,7,-6]]
+import sys
+def max_sum_rectangle(matrix):
+    R,C=len(matrix),len(matrix[0]); max_sum=-sys.maxsize
+    for left in range(C):
+        temp=[0]*R
+        for right in range(left,C):
+            for i in range(R): temp[i]+=matrix[i][right]
+            cur_sum=0; best=-sys.maxsize
+            for x in temp:
+                cur_sum=max(x,cur_sum+x); best=max(best,cur_sum)
+            max_sum=max(max_sum,best)
+    return max_sum
+print(max_sum_rectangle(mat))   # 29
+
+# 2. Implement LFU Cache
+from collections import defaultdict,OrderedDict
+class LFU:
+    def __init__(self,cap): self.cap=cap; self.data={}; self.freq=defaultdict(OrderedDict); self.minf=0
+    def get(self,k):
+        if k not in self.data: return -1
+        v,f=self.data[k]; del self.freq[f][k]
+        if not self.freq[f] and f==self.minf: self.minf+=1
+        self.freq[f+1][k]=v; self.data[k]=(v,f+1); return v
+    def put(self,k,v):
+        if self.cap==0: return
+        if k in self.data: self.data[k]=(v,self.data[k][1]); self.get(k); return
+        if len(self.data)==self.cap:
+            kk,_=self.freq[self.minf].popitem(last=False); del self.data[kk]
+        self.freq[1][k]=v; self.data[k]=(v,1); self.minf=1
+
+# 3. Find longest repeating subsequence
+s="aabb"
+n=len(s); dp=[[0]*(n+1) for _ in range(n+1)]
+for i in range(1,n+1):
+    for j in range(1,n+1):
+        if s[i-1]==s[j-1] and i!=j: dp[i][j]=1+dp[i-1][j-1]
+        else: dp[i][j]=max(dp[i-1][j],dp[i][j-1])
+print(dp[n][n])   # 2 ("aa" or "bb")
+
+# 4. Implement Min Stack
+class MinStack:
+    def __init__(self): self.stack=[]; self.min=[]
+    def push(self,x): self.stack.append(x); self.min.append(x if not self.min else min(x,self.min[-1]))
+    def pop(self): self.stack.pop(); self.min.pop()
+    def top(self): return self.stack[-1]
+    def getMin(self): return self.min[-1]
+
+# 5. Find maximum path sum in binary tree
+class Node:
+    def __init__(self,v): self.v=v; self.left=self.right=None
+root=Node(-10); root.left=Node(9); root.right=Node(20); root.right.left=Node(15); root.right.right=Node(7)
+max_sum=-sys.maxsize
+def dfs(node):
+    global max_sum
+    if not node: return 0
+    l=max(dfs(node.left),0); r=max(dfs(node.right),0)
+    max_sum=max(max_sum,node.v+l+r)
+    return node.v+max(l,r)
+dfs(root); print(max_sum)   # 42
+
+# 6. Implement word break problem
+s="leetcode"; wordDict={"leet","code"}
+dp=[False]*(len(s)+1); dp[0]=True
+for i in range(1,len(s)+1):
+    for w in wordDict:
+        if dp[i-len(w)] and s[i-len(w):i]==w: dp[i]=True
+print(dp[-1])   # True
+
+# 7. Find minimum window substring
+s,t="ADOBECODEBANC","ABC"
+from collections import Counter
+need=Counter(t); missing=len(t); i=start=end=0
+for j,ch in enumerate(s,1):
+    if need[ch]>0: missing-=1
+    need[ch]-=1
+    if missing==0:
+        while i<j and need[s[i]]<0: need[s[i]]+=1; i+=1
+        if end==0 or j-i<end-start: start,end=i,j
+print(s[start:end])   # "BANC"
+
+# 8. Implement topological sort (Kahn’s Algorithm)
+graph={5:[2,0],4:[0,1],2:[3],3:[1],1:[],0:[]}
+indegree={u:0 for u in graph}
+for u in graph:
+    for v in graph[u]: indegree[v]+=1
+q=[u for u in graph if indegree[u]==0]; res=[]
+while q:
+    u=q.pop(0); res.append(u)
+    for v in graph[u]:
+        indegree[v]-=1
+        if indegree[v]==0: q.append(v)
+print(res)   # [5,4,2,3,1,0]
+
+# 9. Implement regex matching ('.' and '*')
+def isMatch(s,p):
+    dp=[[False]*(len(p)+1) for _ in range(len(s)+1)]
+    dp[0][0]=True
+    for j in range(2,len(p)+1):
+        if p[j-1]=="*": dp[0][j]=dp[0][j-2]
+    for i in range(1,len(s)+1):
+        for j in range(1,len(p)+1):
+            if p[j-1]==s[i-1] or p[j-1]==".":
+                dp[i][j]=dp[i-1][j-1]
+            elif p[j-1]=="*":
+                dp[i][j]=dp[i][j-2] or (dp[i-1][j] and (s[i-1]==p[j-2] or p[j-2]=="."))
+    return dp[-1][-1]
+print(isMatch("aab","c*a*b"))   # True
+
+# 10. Implement coin change (minimum coins)
+coins=[1,2,5]; amount=11
+dp=[amount+1]*(amount+1); dp[0]=0
+for c in coins:
+    for x in range(c,amount+1):
+        dp[x]=min(dp[x],dp[x-c]+1)
+print(dp[amount])   # 3 (11=5+5+1)
